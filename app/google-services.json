@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "160231521276",
+    "firebase_url": "https://mealdeal-3c53f.firebaseio.com",
+    "project_id": "mealdeal-3c53f",
+    "storage_bucket": "mealdeal-3c53f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160231521276:android:cdfc7fbe6063ad3fbd5079",
+        "android_client_info": {
+          "package_name": "com.example.mealdeal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "160231521276-4099dma2ua1bcm42lace5snju8khhc09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mealdeal",
+            "certificate_hash": "bf2f8218a4b4679b9f8283baf4e281b0636f73d1"
+          }
+        },
+        {
+          "client_id": "160231521276-snk9f0e45hfirsh9o2as1oqrs6gohnej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOOK403yaI1a53Klq5pXihprPwCAyB3Ys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "160231521276-snk9f0e45hfirsh9o2as1oqrs6gohnej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
