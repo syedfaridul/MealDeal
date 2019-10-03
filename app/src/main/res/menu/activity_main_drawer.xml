@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mon"
+            android:title="Monday" />
+        <item
+            android:id="@+id/nav_tues"
+            android:title="Tuesday" />
+        <item
+            android:id="@+id/nav_wed"
+            android:title="Wednesday" />
+        <item
+            android:id="@+id/nav_thurs"
+            android:title="Thursday" />
+        <item
+            android:id="@+id/nav_fri"
+            android:title="Friday" />
+
+    </group>
+</menu>
