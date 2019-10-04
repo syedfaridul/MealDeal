@@ -10,12 +10,17 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Intent
+import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
+import com.example.mealdeal.R
 
 import com.example.mealdeal.auth.ui.AuthActivity
+import com.example.mealdeal.util.FirebaseUtil
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.firebase.ui.auth.data.client.AuthUiInitProvider
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,11 +29,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var database: DatabaseReference
     private var mMessageReference: DatabaseReference? = null
+    private var mUser: FirebaseUser?=null
+    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+
 
     // Firebase instance variables
     private lateinit var mAuth: FirebaseAuth
     private var mFirebaseUser: FirebaseUser?=null
     private lateinit var providers:List<AuthUI.IdpConfig>
+    private var RC_SIGN_IN=123
+
 
 
 // ...
@@ -45,12 +55,11 @@ class MainActivity : AppCompatActivity() {
         mMessageReference = FirebaseDatabase.getInstance().getReference("message")
         mAuth = FirebaseAuth.getInstance()
 
+
         database!!.child("title").setValue("JavaSampleApproach")
 
 
     }
-
-
 
 
 
@@ -61,30 +70,47 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return when (item.itemId) {
 
-           com.example.mealdeal.R.id.save_menu ->{
+           R.id.save_menu ->{
                  saveMenu()
                  return true
              }
 
-            com.example.mealdeal.R.id.sign_out_menu->{
+           R.id.sign_out_menu->{
 
-                mAuth.signOut()
 
-               // Auth.GoogleSignInApi.signOut(mGoogleApiClient)
-                startActivity(Intent(this, AuthActivity::class.java))
-                finish()
                 return true
             }
-
-
 
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
+/*
+    override fun onPause() {
+        super.onPause()
+        detachListener()
+    }
+
+
+    fun attachListener() {
+        mAuth.addAuthStateListener(mAuthListener)
+    }
+
+    fun detachListener() {
+        mAuth.removeAuthStateListener(mAuthListener)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        attachListener()
+    }
+*/
 
     fun saveMenu(){
 
