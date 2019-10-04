@@ -1,4 +1,4 @@
-package com.example.mealdeal.foodie
+package com.example.mealdeal.foodie.ui
 
 import com.google.firebase.database.IgnoreExtraProperties
 

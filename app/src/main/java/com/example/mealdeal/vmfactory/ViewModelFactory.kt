@@ -1,4 +1,4 @@
-package com.example.mealdeal.factory
+package com.example.mealdeal.vmfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

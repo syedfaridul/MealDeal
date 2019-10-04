@@ -11,5 +11,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="sign_out">Sign out</string>
+    <string name="new_user_signup">New User Signup</string>
+    <string name="okekechidalu17_gmail_com">okekechidalu17@gmail.com</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account_nlogin_here">Already have an account. Login Here</string>
 
 </resources>
