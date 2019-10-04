@@ -14,7 +14,10 @@ import com.example.mealdeal.util.startHomeActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.activity_sign_up.progressbar
+import kotlinx.android.synthetic.main.activity_sign_up.text_view_register
 import javax.inject.Inject
 
 class SignUpActivity : DaggerAppCompatActivity(),AuthListener {
@@ -31,6 +34,21 @@ class SignUpActivity : DaggerAppCompatActivity(),AuthListener {
         setContentView(R.layout.activity_sign_up)
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
         viewModel.authListener= this
+
+    }
+
+    private fun initView(){
+
+      //  viewModel.email=
+
+        button_sign_in.setOnClickListener {
+                v: View? ->
+            viewModel.signup()
+        }
+
+        text_view_register.setOnClickListener { v: View? ->
+            viewModel.goToLogin(v!!)
+        }
 
     }
 

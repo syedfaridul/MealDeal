@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +19,7 @@ import com.example.mealdeal.R
 
 import com.example.mealdeal.auth.ui.AuthActivity
 import com.example.mealdeal.auth.vmfactory.AuthViewModel
+import com.example.mealdeal.foodie.viewmodel.MainActivityViewModel
 import com.example.mealdeal.util.AuthListener
 import com.example.mealdeal.util.FirebaseUtil
 import com.firebase.ui.auth.AuthUI
@@ -33,7 +35,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    lateinit var viewModel: AuthViewModel
+    lateinit var viewModel: MainActivityViewModel
 
     private lateinit var database: DatabaseReference
     private var mMessageReference: DatabaseReference? = null
@@ -51,8 +53,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.mealdeal.R.layout.activity_main)
-        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
+        setContentView(R.layout.activity_main)
+        viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
 
         database = FirebaseDatabase.getInstance().reference
         mMessageReference = FirebaseDatabase.getInstance().getReference("message")
@@ -63,7 +65,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
 
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -83,7 +84,8 @@ class MainActivity : DaggerAppCompatActivity() {
              }
 
            R.id.sign_out_menu->{
-
+               val v:View?=null
+             viewModel.logout(v!!)
 
                 return true
             }

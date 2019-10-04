@@ -15,5 +15,8 @@
     <string name="okekechidalu17_gmail_com">okekechidalu17@gmail.com</string>
     <string name="sign_up">Sign Up</string>
     <string name="already_have_an_account_nlogin_here">Already have an account. Login Here</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="log_in">Log in</string>
+    <string name="don_t_have_an_account_n_register">Don\'t have an account   Register</string>
 
 </resources>

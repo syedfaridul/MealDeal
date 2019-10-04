@@ -1,6 +1,9 @@
 package com.example.mealdeal.auth.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.FirebaseAuth
@@ -11,9 +14,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.example.mealdeal.R
 import com.example.mealdeal.auth.vmfactory.AuthViewModel
+import com.example.mealdeal.foodie.ui.MainActivity
 import com.example.mealdeal.util.AuthListener
 import com.example.mealdeal.util.startHomeActivity
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import javax.inject.Inject
@@ -26,24 +33,38 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
     private lateinit var mAuth: FirebaseAuth
     lateinit var viewModel: AuthViewModel
     private var mUser: FirebaseUser?=null
-   // lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-
-    private var RC_SIGN_IN=123
+    var RC_SIGN_IN= 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.mealdeal.R.layout.activity_main)
+        setContentView(com.example.mealdeal.R.layout.activity_auth)
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
         viewModel.authListener= this
-
-       // mAuth = FirebaseAuth.getInstance()
-
-
-
+       //  signIn()
+        initView()
     }
 
 
-    /*private fun signIn() {
+   private fun initView(){
+
+       viewModel.email= text_email.toString()
+       viewModel.password=text_view_register.toString()
+
+       button_sign_in.setOnClickListener {
+           v: View? ->
+           viewModel.login()
+       }
+
+       text_view_register.setOnClickListener { v: View? ->
+           viewModel.goToSignup(v!!)
+       }
+
+
+   }
+
+
+/*
+   private fun signIn() {
 
         // Choose authentication providers
         val providers = arrayListOf(
@@ -57,11 +78,7 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
                 .build(),
             RC_SIGN_IN)
     }
-*/
 
-
-
-/*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -71,7 +88,7 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 mUser = FirebaseAuth.getInstance().currentUser
-              Intent(this,MainActivity::class.java).also {
+              Intent(this, MainActivity::class.java).also {
                   startActivity(intent)
               }
                 // ...
@@ -83,9 +100,8 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
             }
         }
 
+        }
 
-
-    }
 */
 
 

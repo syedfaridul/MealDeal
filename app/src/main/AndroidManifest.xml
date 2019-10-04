@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mealdeal">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -11,13 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".auth.ui.SignUpActivity"></activity>
-        <activity android:name=".auth.ui.AuthActivity"></activity>
-        <activity android:name=".foodie.ui.MainActivity">
+        <activity android:name=".auth.ui.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".foodie.ui.MainActivity">
+
         </activity>
     </application>
 
