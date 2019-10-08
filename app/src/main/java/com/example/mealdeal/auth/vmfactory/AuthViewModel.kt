@@ -30,7 +30,7 @@ constructor(
     private val disposables = CompositeDisposable()
 
     val user by lazy {
-        repository.currentUser()
+         repository.currentUser()
     }
 
     //function to perform login
@@ -78,9 +78,11 @@ constructor(
     }
 
     fun goToSignup(view: View) {
+
         Intent(view.context, SignUpActivity::class.java).also {
             view.context.startActivity(it)
         }
+
     }
 
     fun goToLogin(view: View) {

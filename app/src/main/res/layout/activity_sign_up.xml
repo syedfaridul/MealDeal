@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"/>
 
                 <EditText
-                    android:id="@+id/text_email"
+                    android:id="@+id/text_email_signup"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_email"
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/prompt_password"
-                    android:id="@+id/edit_text_password"
+                    android:id="@+id/edit_text_password_signup"
                     android:drawableLeft="@drawable/ic_lock"
                     android:hint="@string/prompt_password"
                     android:inputType="textPassword"/>

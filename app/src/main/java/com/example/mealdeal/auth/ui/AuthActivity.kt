@@ -40,19 +40,22 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
         setContentView(com.example.mealdeal.R.layout.activity_auth)
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
         viewModel.authListener= this
-       //  signIn()
-        initView()
+        // initView()*/
+        signIn()
+
     }
 
 
    private fun initView(){
 
-       viewModel.email= text_email.toString()
-       viewModel.password=text_view_register.toString()
 
        button_sign_in.setOnClickListener {
            v: View? ->
+           viewModel.email= text_email.text.toString()
+           viewModel.password=text_view_register.text.toString()
+
            viewModel.login()
+
        }
 
        text_view_register.setOnClickListener { v: View? ->
@@ -63,7 +66,7 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
    }
 
 
-/*
+
    private fun signIn() {
 
         // Choose authentication providers
@@ -79,7 +82,7 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
             RC_SIGN_IN)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
@@ -100,12 +103,12 @@ class AuthActivity : DaggerAppCompatActivity(),AuthListener {
             }
         }
 
-        }
-
-*/
+        }*/
 
 
-    override fun onStarted() {
+
+
+   override fun onStarted() {
         progressbar.visibility = View.VISIBLE
     }
 

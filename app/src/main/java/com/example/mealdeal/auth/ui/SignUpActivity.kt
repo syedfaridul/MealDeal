@@ -34,7 +34,7 @@ class SignUpActivity : DaggerAppCompatActivity(),AuthListener {
         setContentView(R.layout.activity_sign_up)
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
         viewModel.authListener= this
-
+        initView()
     }
 
     private fun initView(){
@@ -43,12 +43,16 @@ class SignUpActivity : DaggerAppCompatActivity(),AuthListener {
 
         button_sign_in.setOnClickListener {
                 v: View? ->
+            viewModel.email=text_email_signup.toString()
+            viewModel.password=edit_text_password_signup.toString()
             viewModel.signup()
         }
 
         text_view_register.setOnClickListener { v: View? ->
             viewModel.goToLogin(v!!)
         }
+
+
 
     }
 
@@ -69,4 +73,7 @@ class SignUpActivity : DaggerAppCompatActivity(),AuthListener {
         progressbar.visibility = View.GONE
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+
+
 }

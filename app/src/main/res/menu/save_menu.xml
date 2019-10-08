@@ -5,9 +5,14 @@
         android:title="@string/save_menu"
         />
 
+
+
     <item
         android:id="@+id/sign_out_menu"
         android:title="@string/sign_out"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/insert_menu"
+        android:title="@string/insert_new_meal"/>
 
 </menu>

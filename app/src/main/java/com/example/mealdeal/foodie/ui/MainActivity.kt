@@ -19,6 +19,7 @@ import com.example.mealdeal.R
 
 import com.example.mealdeal.auth.ui.AuthActivity
 import com.example.mealdeal.auth.vmfactory.AuthViewModel
+import com.example.mealdeal.foodie.LoginActivity
 import com.example.mealdeal.foodie.viewmodel.MainActivityViewModel
 import com.example.mealdeal.util.AuthListener
 import com.example.mealdeal.util.FirebaseUtil
@@ -28,6 +29,10 @@ import com.firebase.ui.auth.data.client.AuthUiInitProvider
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import dagger.android.support.DaggerAppCompatActivity
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
+import org.jetbrains.anko.support.v4.intentFor
 import javax.inject.Inject
 
 
@@ -84,9 +89,11 @@ class MainActivity : DaggerAppCompatActivity() {
              }
 
            R.id.sign_out_menu->{
-               val v:View?=null
-             viewModel.logout(v!!)
-
+               AuthUI.getInstance()
+                   .signOut(this)
+                   .addOnCompleteListener {
+                       startActivity(intentFor<LoginActivity>().newTask().clearTask())
+                   }
                 return true
             }
 
