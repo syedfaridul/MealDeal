@@ -19,5 +19,10 @@
     <string name="log_in">Log in</string>
     <string name="don_t_have_an_account_n_register">Don\'t have an account   Register</string>
     <string name="insert_new_meal">Insert New Meal</string>
+    <string name="monday_menu">Monday Menu</string>
+    <string name="tuesday_menu">Tuesday Menu</string>
+    <string name="wednesday_menu">Wednesday Menu</string>
+    <string name="thursday_menu">Thursday Menu</string>
+    <string name="friday_menu">Friday Menu</string>
 
 </resources>

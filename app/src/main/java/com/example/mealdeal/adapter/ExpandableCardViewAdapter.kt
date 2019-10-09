@@ -1,83 +1,101 @@
-package com.example.mealdeal
+package com.example.mealdeal.adapter
 
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mealdeal.R
+import com.example.mealdeal.data.local.CHILD
+import com.example.mealdeal.data.local.Child
+import com.example.mealdeal.data.local.Item
+import com.example.mealdeal.data.local.Parent
+import com.example.mealdeal.util.inflate
+import com.example.mealdeal.util.loadImageWithGlide
 import kotlinx.android.synthetic.main.cardview_parent.view.*
 
 
-class ExpandableCardViewAdapter(private var items: MutableList<Item>)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    companion object {
-        const val PARENT = 0
-        const val CHILD = 1
-        const val OPEN = 0.0F
-        const val CLOSE = 180.0F
-    }
 
-    data class Item(val type: Int = 0,
-                    var text: String = "Default",
-                    var children: List<Item>? = null)
+class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class ItemHolder(v: View) : RecyclerView.ViewHolder(v) {
-        var textView = v.item_text!!
-        val toggleImageView = v.item_toggle_button!!
+    override fun getItemCount() = itemList.size
+
+    override fun getItemViewType(position: Int): Int {
+        return itemList[position].getItemType()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        var view: View? = null
-
-        when (viewType) {
-            PARENT -> view = inflater.inflate(R.layout.cardview_parent, parent, false)
-            CHILD -> view = inflater.inflate(R.layout.cardview_child, parent, false)
+        return when (viewType) {
+            CHILD -> ChildViewHolder(parent.inflate(
+                R.layout.cardview_child, false))
+            else -> ParentViewHolder(parent.inflate(R.layout.cardview_parent, false))
         }
-
-        return ItemHolder(view!!)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val itemHolder = holder as? ItemHolder
-        val item = items[position]
-
-        itemHolder?.let {
-            it.toggleImageView.let { imageView ->
-                imageView.setImageResource(R.drawable.toogle)
-                imageView.rotation = if (item.children == null) OPEN else CLOSE
-
-                imageView.setOnClickListener { view ->
-                    val start = items.indexOf(item) + 1
-                    if (item.children == null) {
-                        var count = 0
-                        var nextHeader = items.indexOf(items.find { item1 ->
-                            (count++ >= start) && (item1.type == item.type)
-                        })
-
-                        if (nextHeader == -1) nextHeader = items.size
-                        item.children = items.slice(start until nextHeader)
-
-                        val end = item.children!!.size
-                        if (end > 0) items.removeAll(item.children!!)
-
-                        view.animate().rotation(CLOSE).start()
-                        notifyItemRangeRemoved(start, end)
-                    } else {
-                        item.children?.let { list ->
-                            items.addAll(start, list)
-                            view.animate().rotation(OPEN).start()
-                            notifyItemRangeInserted(start, list.size)
-                            item.children = null
-                        }
-                    }
-                }
+        when (holder.itemViewType) {
+            CHILD -> {
+                val childViewHolder = (holder as ChildViewHolder)
+                childViewHolder.childItem = itemList[position] as Child
+                childViewHolder.bind()
             }
-
-            it.textView.text = item.text
+            else -> {
+                val parentViewHolder = holder as ParentViewHolder
+                parentViewHolder.parentItem = itemList[position] as Parent
+                parentViewHolder.bind()
+            }
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    inner class ParentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    override fun getItemViewType(position: Int): Int = items[position].type
+        init {
+            itemView.setOnClickListener {
+                val startPosition = adapterPosition + 1
+                val count = parentItem.childItems.size
+
+                if (parentItem.isExpanded) {
+                    itemList.removeAll(parentItem.childItems)
+                    notifyItemRangeRemoved(startPosition, count)
+                    parentItem.isExpanded = false
+                } else {
+                    itemList.addAll(startPosition, parentItem.childItems)
+                    notifyItemRangeInserted(startPosition, count)
+                    parentItem.isExpanded = true
+                }
+                //updateViewState()
+            }
+        }
+
+        lateinit var parentItem: Parent
+
+        private val title: TextView = itemView.findViewById(R.id.item_text)
+
+        fun bind() {
+            title.text = parentItem.title
+        }
+
+        private fun updateViewState() {
+            if (parentItem.isExpanded) {
+                title.text = itemView.context.getString(R.string.monday_menu)
+            } else {
+                title.text = itemView.context.getString(R.string.monday_menu)
+            }
+        }
+    }
+
+    inner class ChildViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        lateinit var childItem: Child
+
+        private val title: TextView = itemView.findViewById(R.id.food_title)
+        private val image :ImageView=itemView.findViewById(R.id.imageView)
+        fun bind() {
+            title.text = childItem.title
+            image.loadImageWithGlide(childItem.image)
+
+        }
+    }
 }

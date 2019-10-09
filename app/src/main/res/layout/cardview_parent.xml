@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview_parent="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
 
-</LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        cardview_parent:cardCornerRadius="5dp"
+        cardview_parent:cardElevation="8dp"
+        cardview_parent:contentPadding="4dp"
+        cardview_parent:layout_constraintEnd_toEndOf="parent"
+        cardview_parent:layout_constraintStart_toStartOf="parent"
+        cardview_parent:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/item_text"
+                android:layout_width="0dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/baloo_bhai"
+                android:gravity="center|start"
+                android:text="TextView"
+                android:textColor="@color/textColor"
+                android:textSize="24dp"
+                cardview_parent:layout_constraintEnd_toStartOf="@+id/item_toggle_button"
+                cardview_parent:layout_constraintStart_toStartOf="parent"
+                cardview_parent:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/item_toggle_button"
+                android:layout_width="50dp"
+                android:layout_height="66dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/toggle"
+                cardview_parent:layout_constraintEnd_toEndOf="parent"
+                cardview_parent:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
