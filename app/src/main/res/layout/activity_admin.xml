@@ -39,7 +39,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_add_meal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/upload_button" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -68,21 +68,25 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewAdmin" />
 
     <Button
-        android:id="@+id/button_food_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Upload Food Image"
+        android:id="@+id/upload_button"
+        android:layout_width="161dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="81dp"
+        android:background="@drawable/curved_button_for_signin"
+        android:text="Upload Image"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/food_image" />
+        app:layout_constraintStart_toEndOf="@+id/food_image"
+        app:layout_constraintTop_toBottomOf="@+id/foodEditText" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/food_image"
         android:layout_width="141dp"
         android:layout_height="162dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/foodEditText"
-        app:srcCompat="@drawable/food_menu" />
+        android:src="@drawable/food_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
