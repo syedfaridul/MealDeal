@@ -23,6 +23,7 @@ import com.example.mealdeal.data.local.Parent
 import com.example.mealdeal.foodie.LoginActivity
 import com.example.mealdeal.foodie.viewmodel.MainActivityViewModel
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.local.LruGarbageCollector
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -67,6 +68,8 @@ class MainActivity : DaggerAppCompatActivity() {
         database.child("title").setValue("JavaSampleApproach")
 
         initView()
+
+        initBottomNav()
     }
 
 
@@ -174,4 +177,29 @@ class MainActivity : DaggerAppCompatActivity() {
     fun saveMenu(){
 
     }
+
+    private fun initBottomNav() {
+        bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationSelectedListener)
+    }
+
+
+
+    private val mOnNavigationSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
+        when (it.itemId) {
+            R.id.navigation_home-> {
+                //showMovie()
+                true
+            }
+            R.id.navigation_history-> {
+               // showComic()
+                true
+
+            }
+
+            else ->
+                false
+        }
+    }
+
+
 }

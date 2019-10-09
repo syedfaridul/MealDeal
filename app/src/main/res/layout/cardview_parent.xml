@@ -16,9 +16,11 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
         cardview_parent:cardCornerRadius="5dp"
         cardview_parent:cardElevation="8dp"
         cardview_parent:contentPadding="4dp"
+        cardview_parent:layout_constraintBottom_toBottomOf="parent"
         cardview_parent:layout_constraintEnd_toEndOf="parent"
         cardview_parent:layout_constraintStart_toStartOf="parent"
         cardview_parent:layout_constraintTop_toTopOf="parent">
@@ -50,6 +52,8 @@
                 android:layout_width="50dp"
                 android:layout_height="66dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:src="@drawable/toggle"
                 cardview_parent:layout_constraintEnd_toEndOf="parent"
                 cardview_parent:layout_constraintTop_toTopOf="parent" />
