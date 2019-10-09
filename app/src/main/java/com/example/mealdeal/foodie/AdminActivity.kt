@@ -6,6 +6,10 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import com.example.mealdeal.R
 import com.example.mealdeal.data.local.Child
 import com.example.mealdeal.util.FirestoreUtil
@@ -18,17 +22,24 @@ import kotlinx.android.synthetic.main.activity_admin.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class AdminActivity : AppCompatActivity() {
+class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
 
 
     private  val RC_SELECT_IMAGE = 2
     private lateinit var database: DatabaseReference
     private lateinit var storageReference:StorageReference
 
+    var languages = arrayOf("Monday Menu", "Tuesday Menu", "Wednesday Menu", "Thursday Menu", "Friday Menu")
+
+    var spinner: Spinner? = null
+
+
     private val childItem: Child? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
+
+
 
         initViews()
     }
@@ -50,6 +61,26 @@ class AdminActivity : AppCompatActivity() {
         button_add_meal.setOnClickListener {
             foodDeal()
         }
+
+
+
+        spinner = this.spinner
+        spinner!!.setOnItemSelectedListener(this)
+
+        // Create an ArrayAdapter using a simple spinner layout and languages array
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, languages)
+        // Set layout to use when the list of choices appear
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Set Adapter to Spinner
+        spinner!!.setAdapter(aa)
+    }
+
+    override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
+
+    }
+
+    override fun onNothingSelected(arg0: AdapterView<*>) {
+
     }
 
 
@@ -90,5 +121,13 @@ class AdminActivity : AppCompatActivity() {
         database.push().setValue(childItem)
 
     }
+
+
+
+
+
+
+
+
 }
 
