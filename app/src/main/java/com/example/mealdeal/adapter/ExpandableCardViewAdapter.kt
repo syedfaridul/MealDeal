@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealdeal.R
 import com.example.mealdeal.data.local.CHILD
 import com.example.mealdeal.data.local.Child
 import com.example.mealdeal.data.local.Item
 import com.example.mealdeal.data.local.Parent
+import com.example.mealdeal.foodie.ui.MainActivity
 import com.example.mealdeal.util.inflate
 import com.example.mealdeal.util.loadImageWithGlide
 import kotlinx.android.synthetic.main.cardview_parent.view.*
@@ -19,7 +22,7 @@ import kotlinx.android.synthetic.main.cardview_parent.view.*
 
 
 class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    private lateinit var activity: MainActivity
     override fun getItemCount() = itemList.size
 
     override fun getItemViewType(position: Int): Int {
@@ -87,6 +90,28 @@ class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>) : Recycle
     }
 
     inner class ChildViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        init {
+            itemView.setOnClickListener {
+                val builder = AlertDialog.Builder(activity)
+                builder.setTitle("Order")
+                builder.setMessage("Are you sure you want to make this order?")
+                //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+
+                }
+
+                builder.setNegativeButton(android.R.string.no) { dialog, which ->
+
+                }
+
+
+                builder.show()
+            }
+        }
+
+
 
         lateinit var childItem: Child
 

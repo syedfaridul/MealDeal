@@ -42,7 +42,7 @@
                 android:gravity="center|start"
                 android:text="TextView"
                 android:textColor="@color/textColor"
-                android:textSize="24dp"
+                android:textSize="20sp"
                 cardview_parent:layout_constraintEnd_toStartOf="@+id/item_toggle_button"
                 cardview_parent:layout_constraintStart_toStartOf="parent"
                 cardview_parent:layout_constraintTop_toTopOf="parent" />

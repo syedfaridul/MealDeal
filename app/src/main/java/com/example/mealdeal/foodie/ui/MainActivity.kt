@@ -1,5 +1,6 @@
 package com.example.mealdeal.foodie.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -33,6 +34,7 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
     private lateinit var adapter:ExpandableCardViewAdapter
+
    // private var listOfItem = ArrayList<Item>()
 
     @Inject
@@ -177,11 +179,12 @@ class MainActivity : DaggerAppCompatActivity() {
     private val mOnNavigationSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
         when (it.itemId) {
             R.id.navigation_home-> {
-                //showMovie()
+
                 true
             }
             R.id.navigation_history-> {
-               // showComic()
+                intent = Intent(this, HistoryActivity::class.java)
+                startActivity(intent)
                 true
 
             }
