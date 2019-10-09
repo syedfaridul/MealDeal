@@ -37,6 +37,7 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
     private lateinit var adapter:ExpandableCardViewAdapter
+
    // private var listOfItem = ArrayList<Item>()
 
     @Inject
@@ -193,11 +194,12 @@ class MainActivity : DaggerAppCompatActivity() {
     private val mOnNavigationSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
         when (it.itemId) {
             R.id.navigation_home-> {
-                //showMovie()
+
                 true
             }
             R.id.navigation_history-> {
-               // showComic()
+                intent = Intent(this, HistoryActivity::class.java)
+                startActivity(intent)
                 true
 
             }
