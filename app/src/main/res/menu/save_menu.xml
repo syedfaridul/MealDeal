@@ -12,7 +12,7 @@
         android:title="@string/sign_out"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/insert_menu"
-        android:title="@string/insert_new_meal"/>
+    <item android:id="@+id/admin"
+        android:title="@string/admin"/>
 
 </menu>

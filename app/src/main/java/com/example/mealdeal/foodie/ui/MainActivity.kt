@@ -1,5 +1,6 @@
 package com.example.mealdeal.foodie.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mealdeal.adapter.ExpandableCardViewAdapter
 
 import com.example.mealdeal.R
+import com.example.mealdeal.auth.ui.AuthActivity
 import com.example.mealdeal.data.local.Child
 import com.example.mealdeal.data.local.Item
 import com.example.mealdeal.data.local.Parent
@@ -133,6 +135,10 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
        menuInflater.inflate(R.menu.save_menu,menu)
+        val menuItem:MenuItem=menu!!.findItem(R.id.admin)
+        val uid =FirebaseAuth.getInstance().currentUser!!.uid
+        val ref = FirebaseDatabase.getInstance().reference.child("administrators").child(uid).key
+        menuItem.isVisible = FirebaseAuth.getInstance().currentUser!!.uid==ref
 
         return true
     }
@@ -155,7 +161,11 @@ class MainActivity : DaggerAppCompatActivity() {
                    }
                 return true
             }
+           R.id.admin->{
 
+
+               return true
+           }
             else -> super.onOptionsItemSelected(item)
         }
     }

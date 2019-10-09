@@ -24,5 +24,6 @@
     <string name="wednesday_menu">Wednesday Menu</string>
     <string name="thursday_menu">Thursday Menu</string>
     <string name="friday_menu">Friday Menu</string>
+    <string name="admin">Admin</string>
 
 </resources>
