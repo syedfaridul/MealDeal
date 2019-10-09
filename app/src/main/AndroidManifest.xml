@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".foodie.SplashActivity"
+        <activity android:name=".foodie.AdminActivity"></activity>
+        <activity
+            android:name=".foodie.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,11 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".foodie.LoginActivity">
-
-        </activity>
+        <activity android:name=".foodie.LoginActivity"></activity>
         <activity android:name=".auth.ui.SignUpActivity" />
-        <activity android:name=".auth.ui.AuthActivity"></activity>
+        <activity android:name=".auth.ui.AuthActivity" />
         <activity android:name=".foodie.ui.MainActivity" />
     </application>
 

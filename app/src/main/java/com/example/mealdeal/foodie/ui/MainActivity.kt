@@ -2,6 +2,7 @@ package com.example.mealdeal.foodie.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SimpleAdapter
@@ -20,6 +21,7 @@ import com.example.mealdeal.auth.ui.AuthActivity
 import com.example.mealdeal.data.local.Child
 import com.example.mealdeal.data.local.Item
 import com.example.mealdeal.data.local.Parent
+import com.example.mealdeal.foodie.AdminActivity
 import com.example.mealdeal.foodie.LoginActivity
 import com.example.mealdeal.foodie.viewmodel.MainActivityViewModel
 import com.firebase.ui.auth.AuthUI
@@ -164,10 +166,14 @@ class MainActivity : DaggerAppCompatActivity() {
                    }
                 return true
             }
-           R.id.admin->{
-
+           R.id.admin-> {
+               val intent = Intent(this, AdminActivity::class.java).apply {
+                   //  putExtra(EXTRA_MESSAGE, message)
+               }
+                   startActivity(intent)
 
                return true
+
            }
             else -> super.onOptionsItemSelected(item)
         }
