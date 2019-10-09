@@ -19,12 +19,12 @@ data class Parent(val id: Long,val title: String) : Item {
 }
 
 data class Child(
-    var day: String,
     val parent: Parent,
-    var id: Long,
+    var id: String?,
+    var day: String,
     var title: String,
-   var image: String?,
-    var price: Int = 0) : Item {
+   var image: String?
+    ) : Item {
 
     override fun getItemType() = CHILD
 }

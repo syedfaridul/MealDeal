@@ -17,6 +17,14 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_admin.*
 import java.io.ByteArrayOutputStream
 import java.util.*
+import android.widget.Toast
+import android.graphics.BitmapFactory
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import org.jetbrains.anko.image
+import java.io.FileNotFoundException
+
 
 class AdminActivity : AppCompatActivity() {
 
@@ -28,7 +36,7 @@ class AdminActivity : AppCompatActivity() {
     private val childItem: Child? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin)
+        setContentView(com.example.mealdeal.R.layout.activity_admin)
 
         initViews()
     }
@@ -48,11 +56,12 @@ class AdminActivity : AppCompatActivity() {
 
 
         button_add_meal.setOnClickListener {
-            foodDeal()
+            SaveFoodDeal()
         }
     }
 
 
+/*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SELECT_IMAGE && resultCode == Activity.RESULT_OK &&
@@ -69,24 +78,50 @@ class AdminActivity : AppCompatActivity() {
             storageReference = FirebaseStorage.getInstance().reference.child("deals_pictures")
 
 
-            /* StorageUtil.uploadMessageImage(selectedImageBytes) { imagePath ->
+            */
+/* StorageUtil.uploadMessageImage(selectedImageBytes) { imagePath ->
                 val messageToSend =
                     ImageMessage(imagePath, Calendar.getInstance().time,
                         FirebaseAuth.getInstance().currentUser!!.uid,
                         otherUserId, currentUser.name)
                 FirestoreUtil.sendMessage(messageToSend, currentChannelId)
-            }*/
+            }*//*
+
+        }
+    }
+*/
+
+    override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(reqCode, resultCode, data)
+
+
+        if (resultCode == Activity.RESULT_OK) {
+            try {
+                val imageUri = data!!.data
+                val imageStream = contentResolver.openInputStream(imageUri!!)
+                val selectedImage = BitmapFactory.decodeStream(imageStream)
+                food_image.setImageBitmap(selectedImage)
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+            }
+
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show()
         }
     }
 
+    //            storageReference = FirebaseStorage.getInstance().reference.child("deals_pictures")
 
-
-
-    private fun foodDeal(){
+    private fun SaveFoodDeal(){
 
         childItem!!.title=foodEditText.text.toString()
-
-
+        childItem.image=food_image.image.toString()
+        if (childItem.id==null) {
+            database.push().setValue(childItem)
+        } else {
+            database.child(childItem.id!!).setValue(childItem)
+        }
         database.push().setValue(childItem)
 
     }

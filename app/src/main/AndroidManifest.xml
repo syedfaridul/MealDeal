@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".foodie.LoginActivity"></activity>
+        <activity android:name=".foodie.ui.HistoryActivity"></activity>
         <activity android:name=".auth.ui.SignUpActivity" />
         <activity android:name=".auth.ui.AuthActivity" />
         <activity android:name=".foodie.ui.MainActivity" />
