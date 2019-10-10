@@ -15,6 +15,7 @@
         <activity android:name=".foodie.AdminActivity"></activity>
         <activity
             android:name=".foodie.SplashActivity"
+            android:label="Launch Manager"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -124,7 +124,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
         val cardView = recycler_cardview
         cardView.layoutManager = LinearLayoutManager(this)
-        adapter=ExpandableCardViewAdapter(itemList)
+        adapter=ExpandableCardViewAdapter(itemList,this)
         cardView.adapter =adapter
 
 
