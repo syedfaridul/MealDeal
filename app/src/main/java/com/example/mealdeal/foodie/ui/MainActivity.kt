@@ -3,13 +3,14 @@ package com.example.mealdeal.foodie.ui
 import android.content.Intent
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SimpleAdapter
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ import com.example.mealdeal.foodie.LoginActivity
 import com.example.mealdeal.foodie.viewmodel.MainActivityViewModel
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.*
 import com.google.firebase.firestore.local.LruGarbageCollector
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -48,14 +50,15 @@ class MainActivity : DaggerAppCompatActivity() {
     private var mMessageReference: DatabaseReference? = null
     private var mUser: FirebaseUser?=null
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-
+    var parent:Parent?=null
+    val child:Child?=null
 
     // Firebase instance variables
     private lateinit var mAuth: FirebaseAuth
     private var mFirebaseUser: FirebaseUser?=null
     private lateinit var providers:List<AuthUI.IdpConfig>
     private var RC_SIGN_IN=123
-
+    var isAdmin:Boolean? =null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,11 +140,77 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
        menuInflater.inflate(R.menu.save_menu,menu)
         val menuItem:MenuItem=menu!!.findItem(R.id.admin)
-        val uid =FirebaseAuth.getInstance().currentUser!!.uid
-        val ref = FirebaseDatabase.getInstance().reference.child("administrators").child(uid).key
-        menuItem.isVisible = FirebaseAuth.getInstance().currentUser!!.uid==ref
+          var userId=""
+         FirebaseAuth.AuthStateListener{
+
+              userId=it.uid!!
+
+             readAdmin(userId)
+
+
+         }
+        val usid =FirebaseAuth.getInstance().currentUser!!.uid
+         val uid=""
+        var reference=FirebaseDatabase.getInstance().reference.child("administrators")
+            .child(usid).key.toString()
+
+       /* val uid =FirebaseAuth.getInstance().currentUser!!.uid
+        Log.e("uid",uid)
+        val reference=FirebaseDatabase.getInstance().reference.child("administrator").key.toString()
+        val ref = FirebaseDatabase.getInstance().reference.child("administrators").child(uid).key.toString()
+        Log.e("ref",reference)*/
+        menuItem.isVisible =usid==reference
 
         return true
+    }
+
+
+    private fun readAdmin(uid:String){
+
+        isAdmin=false
+        var reference:DatabaseReference=FirebaseDatabase.getInstance().reference.child("administrators")
+            .child(uid)
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get Post object and use the values to update the UI
+                  isAdmin=true
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        reference.addValueEventListener(postListener)
+
+        val value = object : ChildEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                isAdmin = true
+                this@MainActivity.showMenu()
+
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        }
+        reference.addChildEventListener(value)
+
     }
 
 
@@ -163,8 +232,12 @@ class MainActivity : DaggerAppCompatActivity() {
                 return true
             }
            R.id.admin-> {
+
                val intent = Intent(this, AdminActivity::class.java).apply {
                    //  putExtra(EXTRA_MESSAGE, message)
+                 putExtra("food title",child!!.title)
+                   putExtra("id",child.id)
+                   putExtra("food image", child.image)
                }
                    startActivity(intent)
 
@@ -178,6 +251,10 @@ class MainActivity : DaggerAppCompatActivity() {
 
     fun saveMenu(){
 
+    }
+
+    fun showMenu(){
+        invalidateOptionsMenu()
     }
 
     private fun initBottomNav() {
