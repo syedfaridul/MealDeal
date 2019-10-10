@@ -19,10 +19,10 @@ data class Parent(val id: Long,val title: String) : Item {
 }
 
 data class Child(
-    val parent: Parent,
+    val parent: Parent?,
     var id: String?,
-    var day: String,
-    var title: String,
+    var day: String?,
+    var title: String?,
    var image: String?
     ) : Item {
 

@@ -25,17 +25,17 @@ class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
     var languages = arrayOf("Monday Menu", "Tuesday Menu", "Wednesday Menu", "Thursday Menu", "Friday Menu")
 
     var spinner: Spinner? = null
-   lateinit var mimage: String
-    lateinit var mtitle: String
+    var mimage: String?=null
+    var mtitle: String?=null
 
 
     private val childItem: Child? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.mealdeal.R.layout.activity_admin)
-        val intent=intent
-         mtitle=intent.getStringExtra(childItem!!.title)
-         mimage=intent.getStringExtra(childItem.image)
+        val intent= intent
+         mtitle=intent.getStringExtra(childItem?.title)
+         mimage=intent.getStringExtra(childItem?.image)
 
 
         initViews()
@@ -121,7 +121,7 @@ class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
         if (childItem!!.id==null) {
             database.push().setValue(childItem)
         } else {
-            database.child(childItem!!.id!!).setValue(childItem)
+            database.child(childItem.id!!).setValue(childItem)
         }
         database.push().setValue(childItem)
 
