@@ -4,7 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import com.example.mealdeal.R
 import com.example.mealdeal.data.local.Child
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
@@ -60,15 +65,16 @@ class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
         }
 
 
-        /*spinner = this.spinner
-        spinner!!.setOnItemSelectedListener(this)
+
+        spinner = this.spinner_items
+        spinner!!.onItemSelectedListener = this
 
         // Create an ArrayAdapter using a simple spinner layout and languages array
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, languages)
         // Set layout to use when the list of choices appear
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set Adapter to Spinner
-        spinner!!.setAdapter(aa)*/
+        spinner!!.adapter = aa
     }
 
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {

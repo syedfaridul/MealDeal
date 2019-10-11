@@ -1,5 +1,6 @@
 package com.example.mealdeal.adapter
 
+import android.content.Context
 import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +22,8 @@ import kotlinx.android.synthetic.main.cardview_parent.view.*
 
 
 
-class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private lateinit var activity: MainActivity
+class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>,private var context:Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     override fun getItemCount() = itemList.size
 
     override fun getItemViewType(position: Int): Int {
@@ -93,17 +94,17 @@ class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>) : Recycle
 
         init {
             itemView.setOnClickListener {
-                val builder = AlertDialog.Builder(activity)
+                val builder = AlertDialog.Builder(context)
                 builder.setTitle("Order")
                 builder.setMessage("Are you sure you want to make this order?")
                 //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
-                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                builder.setPositiveButton(android.R.string.yes) { _, _ ->
 
                 }
 
-                builder.setNegativeButton(android.R.string.no) { dialog, which ->
-
+                builder.setNegativeButton(android.R.string.no) { dialog, _ ->
+                    dialog.dismiss()
                 }
 
 
