@@ -87,7 +87,6 @@
         app:layout_constraintHorizontal_bias="0.789"
         app:layout_constraintStart_toEndOf="@+id/food_image"
         app:layout_constraintTop_toBottomOf="@+id/foodEditText" />
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/food_image"
         android:layout_width="100dp"

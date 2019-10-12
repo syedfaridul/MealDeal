@@ -1,6 +1,8 @@
 package com.example.mealdeal.data.local
 
 import android.media.Image
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
 
 interface Item {
@@ -9,8 +11,8 @@ interface Item {
 
 const val PARENT = 0
 const val CHILD = 1
-
-data class Parent(val id: Long,val title: String) : Item {
+@Parcelize
+data class Parent(var id: String, var title: String) : Parcelable,Item {
     val childItems = ArrayList<Child>()
     var isExpanded = false
     var selectedChild: Child? = null
@@ -18,13 +20,13 @@ data class Parent(val id: Long,val title: String) : Item {
     override fun getItemType() = PARENT
 }
 
+@Parcelize
 data class Child(
     val parent: Parent?,
     var id: String?,
-    var day: String?,
     var title: String?,
    var image: String?
-    ) : Item {
+    ) : Parcelable,Item {
 
     override fun getItemType() = CHILD
 }

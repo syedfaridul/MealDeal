@@ -53,15 +53,16 @@ class MainActivity : DaggerAppCompatActivity() {
     private var mMessageReference: DatabaseReference? = null
     private var mUser: FirebaseUser? = null
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-    var parent: Parent? = null
-    val child: Child? = null
+    var mparent:Parent= Parent("","")
+     private  var  child: Child=Child(mparent,"","","")
 
     // Firebase instance variables
     private lateinit var mAuth: FirebaseAuth
-    private var mFirebaseUser: FirebaseUser? = null
     private lateinit var providers: List<AuthUI.IdpConfig>
     private var RC_SIGN_IN = 123
-    var isAdmin: Boolean? = null
+    private var parent = arrayOf("Monday Menu", "Tuesday Menu", "Wednesday Menu", "Thursday Menu", "Friday Menu")
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +76,10 @@ class MainActivity : DaggerAppCompatActivity() {
 
 
         database.child("title").setValue("JavaSampleApproach")
+        database.child("prosper").setValue("Bad Guy, wey too sabi")
 
-        initView()
+
+        retrieveData()
 
         initBottomNav()
     }
@@ -85,13 +88,13 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun initView() {
 
         //some predefined values:
-        val parent1 = Parent(0, getString(R.string.monday_menu))
-        val childItems1 = ArrayList<Child>()
-        childItems1.add(Child(parent1, "", "monday", "rice", ""))
+        val parent1 = Parent("", getString(R.string.monday_menu))
+         val childItems1 = ArrayList<Child>()
+        childItems1.add(Child(parent1, "monday", "monday", "rice"))
         parent1.childItems.clear()
         parent1.childItems.addAll(childItems1)
 
-        val parent2 = Parent(1, getString(R.string.tuesday_menu))
+       /* val parent2 = Parent(1, getString(R.string.tuesday_menu))
         val childItems2 = ArrayList<Child>()
         childItems2.add(Child(parent2, "", "monday", "rice", ""))
         childItems2.add(Child(parent2, "", "monday", "rice", ""))
@@ -119,13 +122,13 @@ class MainActivity : DaggerAppCompatActivity() {
         childItems5.add(Child(parent5, "", "monday", "rice", ""))
         parent5.childItems.clear()
         parent5.childItems.addAll(childItems5)
-
+*/
         val itemList = ArrayList<Item>()
         itemList.add(parent1)
-        itemList.add(parent2)
+       /* itemList.add(parent2)
         itemList.add(parent3)
         itemList.add(parent4)
-        itemList.add(parent5)
+        itemList.add(parent5)*/
 
 
         val cardView = recycler_cardview
@@ -177,53 +180,96 @@ class MainActivity : DaggerAppCompatActivity() {
         reference.addValueEventListener(postListener)
 
         Log.e("ref",reference.key)
-        /* val uid =FirebaseAuth.getInstance().currentUser!!.uid
-        Log.e("uid",uid)
-        val reference=FirebaseDatabase.getInstance().reference.child("administrator").key.toString()
-        val ref = FirebaseDatabase.getInstance().reference.child("administrators").child(uid).key.toString()
-        Log.e("ref",reference)*/
 
         return true
     }
 
 
+    override fun onResume() {
+        super.onResume()
+
+        retrieveData()
+    }
+
+    private fun retrieveData() {
+
+        var parent_reference = FirebaseDatabase.getInstance().reference.child(parent[0])
+        //some predefined values:
+        var foodImage=""
+        var foodTitle= ""
+        var i=0
+        val parent1 = Parent("", parent_reference.key.toString())
+        var childItems1 = ArrayList<Child>()
+
+        Log.e("what this string is ", parent_reference.key.toString())
+
+        parent_reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+
+                        val children = p0.children
+                        children.forEach {
+                            foodTitle = it.child("title").value.toString()
+                            foodImage = it.child("image").value.toString()
+                            childItems1.add(Child(mparent, "", foodTitle, foodImage))
+
+                        }
+                        Log.e("foodImage", foodImage)
+                        Log.e("foodImage", foodTitle)
+                        parent1.childItems.clear()
+                        parent1.childItems.addAll(childItems1)
+
+                    }   })
+        //
 
 
 
+        val itemList = ArrayList<Item>()
+        itemList.add(parent1)
 
-    var postListener = object : ChildEventListener {
-        override fun onCancelled(p0: DatabaseError) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        val cardView = recycler_cardview
+        cardView.layoutManager = LinearLayoutManager(this)
+
+
+
+        adapter = ExpandableCardViewAdapter(itemList, this)
+        cardView.adapter = adapter
+
+
+
+    }
+
+    val listener = object : ValueEventListener {
+        var childlist = ArrayList<Child>()
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            // Get Post object and use the values to update the UI
+            for (d in dataSnapshot.children) run {
+                child= d.getValue() as Child
+                childlist.add(child)
+
+                Log.e("ref", child.toString())
+
+            }
+            // ...
         }
 
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-        }
-
-        override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-            val randomKey:String?= p0.key
-
-        }
-
-        override fun onChildRemoved(p0: DataSnapshot) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onCancelled(databaseError: DatabaseError) {
+            // Getting Post failed, log a message
+            Log.w("loadPost:onCancelled", databaseError.toException())
+            // ...
         }
 
 
     }
 
-
-
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return when (item.itemId) {
 
            R.id.save_menu ->{
-                 saveMenu()
                  return true
              }
 
@@ -239,10 +285,10 @@ class MainActivity : DaggerAppCompatActivity() {
 
                val intent = Intent(this, AdminActivity::class.java).apply {
                    //  putExtra(EXTRA_MESSAGE, message)
-
-                   intent.putExtra("food title",child?.title)
-                   intent.putExtra("id",child?.id)
-                   intent.putExtra("food image", child?.image)
+                 /*  intent.putExtra("child",child)
+                   intent.putExtra("food title",child.title)
+                  // intent.putExtra("id",child?.id)
+                   intent.putExtra("food image", child.image)*/
                }
                    startActivity(intent)
 
@@ -254,9 +300,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
 
-    fun saveMenu(){
 
-    }
 
     fun showMenu(){
         invalidateOptionsMenu()

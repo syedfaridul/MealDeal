@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.mealdeal.R
 
+
 fun ImageView.loadImageWithGlide(imageUrl: String?){
     Glide
         .with(this)
@@ -15,3 +16,4 @@ fun ImageView.loadImageWithGlide(imageUrl: String?){
                 .fitCenter())
         .into(this)
 }
+
