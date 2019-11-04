@@ -6,7 +6,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.mealdeal.R
 
 
-fun ImageView.loadImageWithGlide(imageUrl: String?){
+fun ImageView.loadImageWithGlide(imageUrl: Int?){
     Glide
         .with(this)
         .load(imageUrl)

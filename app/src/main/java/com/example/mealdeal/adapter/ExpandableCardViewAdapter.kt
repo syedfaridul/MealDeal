@@ -1,13 +1,10 @@
 package com.example.mealdeal.adapter
 
 import android.content.Context
-import android.media.Image
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealdeal.R
@@ -15,14 +12,14 @@ import com.example.mealdeal.data.local.CHILD
 import com.example.mealdeal.data.local.Child
 import com.example.mealdeal.data.local.Item
 import com.example.mealdeal.data.local.Parent
-import com.example.mealdeal.foodie.ui.MainActivity
 import com.example.mealdeal.util.inflate
 import com.example.mealdeal.util.loadImageWithGlide
-import kotlinx.android.synthetic.main.cardview_parent.view.*
 
 
-
-class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>,private var context:Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExpandableCardViewAdapter(
+    private val itemList: MutableList<Item>,
+    private var context: Context
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount() = itemList.size
 
@@ -32,8 +29,11 @@ class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>,private va
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            CHILD -> ChildViewHolder(parent.inflate(
-                R.layout.cardview_child, false))
+            CHILD -> ChildViewHolder(
+                parent.inflate(
+                    R.layout.cardview_child, false
+                )
+            )
             else -> ParentViewHolder(parent.inflate(R.layout.cardview_parent, false))
         }
     }
@@ -62,6 +62,7 @@ class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>,private va
 
                 if (parentItem.isExpanded) {
                     itemList.removeAll(parentItem.childItems)
+                    itemList
                     notifyItemRangeRemoved(startPosition, count)
                     parentItem.isExpanded = false
                 } else {
@@ -94,30 +95,36 @@ class ExpandableCardViewAdapter(private val itemList: ArrayList<Item>,private va
 
         init {
             itemView.setOnClickListener {
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle("Order")
-                builder.setMessage("Are you sure you want to make this order?")
-                //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
-
-                builder.setPositiveButton(android.R.string.yes) { _, _ ->
-
-                }
-
-                builder.setNegativeButton(android.R.string.no) { dialog, _ ->
-                    dialog.dismiss()
-                }
 
 
-                builder.show()
+                orderDialog()
             }
         }
 
+        private fun orderDialog() {
 
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Order")
+            builder.setMessage("Are you sure you want to make this order?")
+            //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+            builder.setPositiveButton(android.R.string.yes) { _, _ ->
+            }
+
+            builder.setNegativeButton(android.R.string.no) { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
+        }
+
+        private fun removeItem() {
+
+        }
 
         lateinit var childItem: Child
 
         private val title: TextView = itemView.findViewById(R.id.food_title)
-        private val image :ImageView=itemView.findViewById(R.id.imageView)
+        private val image: ImageView = itemView.findViewById(R.id.imageView)
         fun bind() {
             title.text = childItem.title
             image.loadImageWithGlide(childItem.image)

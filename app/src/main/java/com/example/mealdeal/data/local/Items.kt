@@ -11,8 +11,9 @@ interface Item {
 
 const val PARENT = 0
 const val CHILD = 1
+
 @Parcelize
-data class Parent(var id: String, var title: String) : Parcelable,Item {
+data class Parent(var id: String, var title: String) : Parcelable, Item {
     val childItems = ArrayList<Child>()
     var isExpanded = false
     var selectedChild: Child? = null
@@ -25,8 +26,8 @@ data class Child(
     val parent: Parent?,
     var id: String?,
     var title: String?,
-   var image: String?
-    ) : Parcelable,Item {
+    var image: Int?
+) : Parcelable, Item {
 
     override fun getItemType() = CHILD
 }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -18,7 +17,6 @@ import android.util.Log
 import android.widget.*
 import com.example.mealdeal.data.local.Parent
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.cardview_child.*
 import org.jetbrains.anko.image
 import java.io.FileNotFoundException
 
@@ -31,13 +29,13 @@ class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
     private  var database: DatabaseReference =ref.reference
     private lateinit var storageReference:StorageReference
 
-    var languages = arrayOf("Monday Menu", "Tuesday Menu", "Wednesday Menu", "Thursday Menu", "Friday Menu")
+    var daysOfOrder = arrayOf("Monday Menu", "Tuesday Menu", "Wednesday Menu", "Thursday Menu", "Friday Menu")
 
     var spinner: Spinner? = null
     var parent:Parent=Parent("","")
 
     private lateinit var day_for_menu: String
-    private var childItem: Child= Child(parent,"","","")
+    private var childItem: Child= Child(parent,"","",0)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,15 +49,11 @@ class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
         database.child("prosper").setValue("Bad Guy, wey too sabi")
 
         initViews()
-        //postToDatabase()
+        //postToDatabase();l
     }
 
-
-
     private fun initViews() {
-
         upload_button.setOnClickListener {
-
             val intent = Intent().apply {
                 type = "image/*"
                 action = Intent.ACTION_GET_CONTENT
@@ -67,67 +61,70 @@ class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
             }
             startActivityForResult(Intent.createChooser(intent, "Select Image"), SELECT_IMAGE)
         }
-
-
         button_add_meal.setOnClickListener {
-
-            childItem.id=database.child(day_for_menu).push().key
-            childItem.title=foodEditText.text.toString()
-            childItem.image=food_image.image.toString()
-            childItem.parent!!.id=day_for_menu
-            childItem.parent!!.title=day_for_menu
-            childItem.id?.let { it1 -> database.child(day_for_menu).child(it1).setValue(childItem) }
-           finish()
-
+           saveMenu()
         }
-
-
-
         spinner = this.spinner_items
         spinner!!.onItemSelectedListener = this
-
-        // Create an ArrayAdapter using a simple spinner layout and languages array
-        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, languages)
-        // Set layout to use when the list of choices appear
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, daysOfOrder)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set Adapter to Spinner
         spinner!!.adapter = aa
     }
 
+    private fun saveMenu(){
+
+    }
+
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-           day_for_menu =languages[position]
+           day_for_menu =daysOfOrder[position]
            if(database.key==null){
-               database.child(day_for_menu).setValue(day_for_menu)
+               database.push().setValue(day_for_menu)
                Log.e("day",day_for_menu)
            }
     }
 
+
     override fun onNothingSelected(arg0: AdapterView<*>) {
         if(database.key==null){
-            database.push().child("Monday Menu").setValue("Monday Menu")
+           // database.push().child("Monday Menu").push().setValue("Monday Menu")
         }
     }
 
+    private fun saveMenus() {
+        for (i in daysOfOrder.indices) {
+            var parentReference = FirebaseDatabase.getInstance().reference.child(daysOfOrder[i])
+            //some predefined values:
+            var foodImage = ""
+            var foodTitle = ""
+            var i = 0
+            var parent1 = Parent("", parentReference.key.toString())
+            var childItems1 = ArrayList<Child>()
 
-/* StorageUtil.uploadMessageImage(selectedImageBytes) { imagePath ->
-                val messageToSend =
-                    ImageMessage(imagePath, Calendar.getInstance().time,
-                        FirebaseAuth.getInstance().currentUser!!.uid,
-                        otherUserId, currentUser.name)
-                FirestoreUtil.sendMessage(messageToSend, currentChannelId)
-            }*//*
+            Log.e("what this string is ", parentReference.key.toString())
 
+            parentReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+                override fun onDataChange(p0: DataSnapshot) {
+                    val children = p0.children
+                    children.forEach {
+                        foodTitle = it.child("title").value.toString()
+                        foodImage = it.child("image").value.toString()
+                        childItems1.add(Child(parent, "", foodTitle, 0))
+
+                    }
+                    Log.e("foodImage", foodImage)
+                    Log.e("foodImage", foodTitle)
+                    parent1.childItems.clear()
+                    parent1.childItems.addAll(childItems1)
+                }
+            })
         }
     }
-*/
-
-
 
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(reqCode, resultCode, data)
-
-
         if (resultCode == Activity.RESULT_OK) {
             try {
                 val imageUri = data!!.data
@@ -175,18 +172,6 @@ class AdminActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
         }
         menu_reference.addValueEventListener(menuListener)
     }
-
-
-
-    private fun saveFoodDeal(){
-        childItem.id=database.child(day_for_menu).push().key
-    }
-
-
-
-
-
-
 
 }
 
