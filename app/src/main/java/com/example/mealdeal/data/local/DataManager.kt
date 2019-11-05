@@ -19,32 +19,34 @@ object DataManager {
         val child = Child(parent, id ,  title , image)
         childs.add(child)
         return childs.lastIndex
+
     }
 
+
      fun initializeParent() {
-        var parent = Parent("1", "Monday Menu")
+        var parent = Parent(0,"Monday Menu", "Monday Menu")
          parents[parent.id] = parent
 
-        parent= Parent("2", "Tuesday Menu")
+        parent= Parent(1,"Tuesday Menu", "Tuesday Menu")
         parents[parent.id] = parent
 
-         parent = Parent("3", "Wednesday Menu")
+         parent = Parent(2,"Wednesday Menu", "Wednesday Menu")
         parents[parent.id]= parent
 
-         parent = Parent("4", "Thursday")
+         parent = Parent(3,"Thursday Menu", "Thursday Menu")
         parents[parent.id] =  parent
 
-        parent= Parent("5", "Friday Menu")
+        parent= Parent(4,"Friday Menu", "Friday Menu")
         parents[parent.id] = parent
 
     }
 
     private fun initializeChild() {
-        var parent = parents["1"]
-        var child = Child(parent, "1", "Rice and Chicken", R.drawable.user_profile_image_backgroung)
+        var parent = parents["Monday Menu"]
+        var child = Child(parent, "Monday Menu", "Rice and Chicken", R.drawable.user_profile_image_backgroung)
         childs.add(child)
 
-        child = Child(parent, "1", " Semo and Eforiro", R.drawable.user_profile_image_backgroung)
+        child = Child(parent, "Tuesday Menu", " Semo and Eforiro", R.drawable.user_profile_image_backgroung)
         childs.add(child)
     }
 }

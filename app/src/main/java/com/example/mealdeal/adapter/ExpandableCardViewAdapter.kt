@@ -62,7 +62,6 @@ class ExpandableCardViewAdapter(
 
                 if (parentItem.isExpanded) {
                     itemList.removeAll(parentItem.childItems)
-                    itemList
                     notifyItemRangeRemoved(startPosition, count)
                     parentItem.isExpanded = false
                 } else {

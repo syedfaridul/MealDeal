@@ -19,7 +19,7 @@ fun doStuff(whateverFunction: () -> Unit) {
         var parentReference = FirebaseDatabase.getInstance().reference.child(parent[i])
         //some predefined values:
 
-        parent1 = Parent("", parentReference.key.toString())
+        parent1 = Parent(0,"", parentReference.key.toString())
         var childItems1 = ArrayList<Child>()
 
         Log.e("what this string is ", parentReference.key.toString())

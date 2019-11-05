@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.SimpleAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -34,6 +35,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
+import java.util.HashMap
 import javax.inject.Inject
 import com.google.firebase.database.DataSnapshot as FirebaseDatabaseDataSnapshot
 
@@ -51,13 +53,17 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
     lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: MainActivityViewModel
 
-    private lateinit var database: DatabaseReference
+    private var database: DatabaseReference? = null
     private var mMessageReference: DatabaseReference? = null
     private var mUser: FirebaseUser? = null
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-    var mparent: Parent = Parent("", "")
+    var mparent: Parent = Parent(0,"", "")
     private var child: Child = Child(mparent, "", "", 0)
     private var itemList = ArrayList<Item>()
+    val parentItems  = DataManager.parents
+    private var recyclerView: RecyclerView?= null
+    private var no =0
+
 
     // Firebase instance variables
     private lateinit var mAuth: FirebaseAuth
@@ -74,158 +80,126 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
         viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
 
         database = FirebaseDatabase.getInstance().reference
+        initView(database!!)
         mMessageReference = FirebaseDatabase.getInstance().getReference("message")
         mAuth = FirebaseAuth.getInstance()
-
-        database.child("title").setValue("JavaSampleApproach")
-        database.child("prosper").setValue("Bad Guy, wey too sabi")
         mAuthListener = FirebaseAuth.AuthStateListener {
             listOfParent
         }
-
-        initView()
         initBottomNav()
         doStuff {
-            /*val children = p0.children
-            children.forEach {
-            }
 
-            parent1.childItems.clear()
-            parent1.childItems.addAll(childItems1)*/
         }
 
         val jagajagaAnotherWay = JagajagaAnotherWay(this)
         jagajagaAnotherWay.doStuff()
-    }
 
-    private fun initView() {
+        recyclerView = findViewById<View>(R.id.recycler_cardview) as RecyclerView
+       recyclerView!!.layoutManager = LinearLayoutManager(this@MainActivity)
+
+        var child = HashMap<String, Child>()
+        val childItems = DataManager.childs
+
+        val parentItem = DataManager.parents
+
+        val parentReference = FirebaseDatabase.getInstance().reference
+
+        parentReference.addValueEventListener(
+            object: ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(dataSnapshot: com.google.firebase.database.DataSnapshot) {
+                    for (snapShot in dataSnapshot.children) {
+
+                        val parentKey = snapShot.key!!
+
+                        val childReference =
+                            FirebaseDatabase.getInstance().reference.child(parentKey)
+
+
+                        childReference.addValueEventListener(
+
+                            object : ValueEventListener {
+                                override fun onCancelled(p0: DatabaseError) {
+                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                }
+
+                                override fun onDataChange(dataSnapshot: FirebaseDatabaseDataSnapshot) {
+                                    val Child = ArrayList<Child>()
+                                    val childItem = Child(mparent,id="",title = "",image = 0)
+
+                                    for (snapshot1 in dataSnapshot.children) {
+                                         val id = snapshot1.child("id")
+                                         val title = snapshot1.child("title")
+                                         val image = snapshot1.child("image")
+                                         val parent = snapshot1.child("parent")
+                                        childItem.id =id.toString()
+                                        childItem.title = title.toString()
+                                        childItem.image = no
+
+                                        //childItem.image = image.value as Int
+                                        parentItems["Monday Menu"]!!.childItems.add(no,childItem)
+                                    }
+
+                                    no += 1
+
+                                    adapter = ExpandableCardViewAdapter(
+                                        parentItems.values.sortedBy { it.id }.toMutableList(),
+                                        this@MainActivity
+                                    )
+                                    recyclerView!!.adapter = adapter
+
+                                }
+
+                            }
+                        )
+
+
+                    }
+                }
+
+    })}
+
+
+    private fun initView(databaseReference: DatabaseReference) {
         var parentId = ""
         val childItems = DataManager.childs
         val parentItems = DataManager.parents
         childItems.forEach {
             parentId = it.id.toString()
             parentItems[parentId]!!.childItems.add(it)
+            //val key = databaseReference.child("Menu").push().key
+            //it.id = key
+            //databaseReference.child("Menu").child(key!!).setValue(it)
         }
 
-        val cardView = recycler_cardview
+
+        /*val cardView = recycler_cardview
         cardView.layoutManager = LinearLayoutManager(this)
 
-        adapter = ExpandableCardViewAdapter(DataManager.parents.values.toMutableList(), this)
-        cardView.adapter = adapter
+        adapter = ExpandableCardViewAdapter(DataManager.parents.values.sortedBy { it.no }.toMutableList(), this)
+        cardView.adapter = adapter*/
 
     }
-/*
-    private fun initView() {
-        //some predefined values:
-      */
-/*  val parent1 = Parent("", getString(R.string.monday_menu))
-         var childItems1 = ArrayList<Child>()
-      //  childItems1.add(Child(parent1, "monday", "monday", "rice"))
-        valueListener {
 
-
-            val children = p0.children
-            children.forEach {
-                Log.e("datasnapshot", it.key.toString())
-
-                child.image = it.child("image").value.toString()
-                Log.e("datasnapshot", child.image.toUInt())
-
-                child.title = it.child("title").value.toString()
-                child.id = it.child("id").value.toString()
-                Log.e("", "the value for the num ${child.title}")
-
-                childItems1.add(Child(mparent, child.id, child.title, child.image))
-            }
-            }
-        parent1.childItems.clear()
-        parent1.childItems.addAll(childItems1)*//*
-
-
-
- */
-/*val parent2 = Parent("", getString(R.string.tuesday_menu))
-        val childItems2 = ArrayList<Child>()
-        valueListener {
-            setValue(p0=it,childItems = childItems2)
-            childItems2.add(Child(parent1,child.id,child.title,child.image))
-
-        }
-        parent2.childItems.clear()
-        parent2.childItems.addAll(childItems2)
-
-        val parent3 = Parent("", getString(R.string.wednesday_menu))
-        val childItems3 = ArrayList<Child>()
-        valueListener {
-            setValue(p0=it,childItems = childItems3)
-            childItems3.add(Child(parent1,child.id,child.title,child.image))
-
-        }
-        parent3.childItems.clear()
-        parent3.childItems.addAll(childItems3)
-*//*
-
-
-
-      */
-/*  val parent5 = Parent(4, getString(R.string.friday_menu))
-        val childItems5 = ArrayList<Child>()
-        childItems5.add(Child(parent5, "", "monday", "rice", ""))
-        parent5.childItems.clear()
-        parent5.childItems.addAll(childItems5)
-*//*
-
- val itemList = ArrayList<Item>()
-        itemList.add(parent1)
-
-   itemList.add(parent2)
-        itemList.add(parent3)
-        itemList.add(parent4)
-        itemList.add(parent5)
-
-
-
-        val cardView = recycler_cardview
-        cardView.layoutManager = LinearLayoutManager(this)
-
-        adapter=ExpandableCardViewAdapter(itemList,this)
-        cardView.adapter =adapter
-
-
-*/
-/*
- val list = rootView.findViewById<RecyclerView>(R.id.list)
-           list.adapter = SimpleAdapter(itemList)
-
-           return rootView
-*//*
-
-
-    }
-*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.save_menu, menu)
         val menuItem: MenuItem = menu!!.findItem(R.id.admin)
-
         val usid = FirebaseAuth.getInstance().currentUser!!.uid
         Log.e("uid", usid)
-
         var reference = FirebaseDatabase.getInstance().reference.child("administrators")
-
-
         val postListener = object : ValueEventListener {
             var event: String = ""
             override fun onDataChange(dataSnapshot: FirebaseDatabaseDataSnapshot) {
                 // Get Post object and use the values to update the UI
                 for (d in dataSnapshot.children) run {
                     event = d.key.toString()
-
                     Log.e("ref", event)
-
                 }
-                menuItem.isVisible = usid == event
-                // ...
+                menuItem.isVisible = usid == event // ...
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -240,8 +214,59 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
         return true
     }
 
+    private fun retrieveData(){
+        var child = HashMap<String, Child>()
+        val childItems = DataManager.childs
+
+        val parentItem = DataManager.parents
+/*
+        parentItem.forEach {
+            var reference = FirebaseDatabase.getInstance().reference.child(
+                parentItem.values.toString()
+            )
+            val postListener = object : ValueEventListener {
+                var childItem = Child(parent, "", "", 0)
+
+                override fun onDataChange(dataSnapshot: FirebaseDatabaseDataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    for (d in dataSnapshot.children) {
+
+                        childItem = d.getValue(Child::class.java)!!
+                        var parentId = childItem.id.toString()
+                        DataManager.parents[parentId]!!.childItems.add(childItem)
+
+
+                        adapter = ExpandableCardViewAdapter(
+                            DataManager.parents.values.sortedBy { it.no }.toMutableList(),
+                            this@MainActivity
+                        )
+                        recyclerView!!.adapter = adapter
+
+                        recycler_cardview.adapter!!.notifyDataSetChanged()
+
+                    }
+                    // menuItem.isVisible = usid == event
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Getting Post failed, log a message
+                    Log.w("loadPost:onCancelled", databaseError.toException())
+                }
+
+
+            }
+            reference.addValueEventListener(postListener)
+
+
+        }
+*/
+
+
+    }
+
     override fun onResume() {
         super.onResume()
+//      recycler_cardview.adapter!!.notifyDataSetChanged()
     }
 
     override fun onPause() {
