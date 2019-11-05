@@ -98,9 +98,6 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
        recyclerView!!.layoutManager = LinearLayoutManager(this@MainActivity)
 
         var child = HashMap<String, Child>()
-        val childItems = DataManager.childs
-
-        val parentItem = DataManager.parents
 
         val parentReference = FirebaseDatabase.getInstance().reference
 
@@ -212,56 +209,6 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
         Log.e("ref", reference.key)
 
         return true
-    }
-
-    private fun retrieveData(){
-        var child = HashMap<String, Child>()
-        val childItems = DataManager.childs
-
-        val parentItem = DataManager.parents
-/*
-        parentItem.forEach {
-            var reference = FirebaseDatabase.getInstance().reference.child(
-                parentItem.values.toString()
-            )
-            val postListener = object : ValueEventListener {
-                var childItem = Child(parent, "", "", 0)
-
-                override fun onDataChange(dataSnapshot: FirebaseDatabaseDataSnapshot) {
-                    // Get Post object and use the values to update the UI
-                    for (d in dataSnapshot.children) {
-
-                        childItem = d.getValue(Child::class.java)!!
-                        var parentId = childItem.id.toString()
-                        DataManager.parents[parentId]!!.childItems.add(childItem)
-
-
-                        adapter = ExpandableCardViewAdapter(
-                            DataManager.parents.values.sortedBy { it.no }.toMutableList(),
-                            this@MainActivity
-                        )
-                        recyclerView!!.adapter = adapter
-
-                        recycler_cardview.adapter!!.notifyDataSetChanged()
-
-                    }
-                    // menuItem.isVisible = usid == event
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Getting Post failed, log a message
-                    Log.w("loadPost:onCancelled", databaseError.toException())
-                }
-
-
-            }
-            reference.addValueEventListener(postListener)
-
-
-        }
-*/
-
-
     }
 
     override fun onResume() {
