@@ -1,6 +1,5 @@
 package com.example.mealdeal.data.local
 
-import androidx.core.content.res.TypedArrayUtils.getString
 import com.example.mealdeal.R
 
 object DataManager {
@@ -15,7 +14,7 @@ object DataManager {
 
 
 
-    fun addChild(parent: Parent, id: String, title: String, image: Int?):Int{
+    fun addChild(parent: Parent, id: String, title: String, image: Int):Int{
         val child = Child(parent, id ,  title , image)
         childs.add(child)
         return childs.lastIndex

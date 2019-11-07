@@ -1,6 +1,5 @@
 package com.example.mealdeal.data.local
 
-import android.media.Image
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -26,7 +25,7 @@ data class Child(
     val parent: Parent?,
     var id: String?,
     var title: String?,
-    var image: Int?
+    var image: Int
 ) : Parcelable, Item {
 
     override fun getItemType() = CHILD

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.SimpleAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +25,6 @@ import com.example.mealdeal.foodie.viewmodel.MainActivityViewModel
 import com.example.mealdeal.util.JagajagaAnotherWay
 import com.example.mealdeal.util.JagajagaInterface
 import com.example.mealdeal.util.doStuff
-import com.example.mealdeal.util.valueListener
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.*
@@ -46,6 +44,7 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
     }
 
     private lateinit var adapter: ExpandableCardViewAdapter
+
 
     // private var listOfItem = ArrayList<Item>()
 
@@ -78,6 +77,7 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
+
 
         database = FirebaseDatabase.getInstance().reference
         initView(database!!)
@@ -125,27 +125,35 @@ class MainActivity : DaggerAppCompatActivity(), JagajagaInterface {
 
                                 override fun onDataChange(dataSnapshot: FirebaseDatabaseDataSnapshot) {
                                     val Child = ArrayList<Child>()
-                                    val childItem = Child(mparent,id="",title = "",image = 0)
+                                    val childItem = Child(mparent, id ="", title = "", image = 0)
 
                                     for (snapshot1 in dataSnapshot.children) {
                                          val id = snapshot1.child("id")
                                          val title = snapshot1.child("title")
                                          val image = snapshot1.child("image")
                                          val parent = snapshot1.child("parent")
-                                        childItem.id =id.toString()
-                                        childItem.title = title.toString()
-                                        childItem.image = no
+                                        childItem.id =id.value.toString()
+                                        childItem.title = title.value.toString()
+                                        //childItem.image = image.value as Int
+                                        Log.e("image",image.toString())
+
 
                                         //childItem.image = image.value as Int
                                         parentItems["Monday Menu"]!!.childItems.add(no,childItem)
+                                        Log.e("parent",parentKey.toString())
+                                        Log.e("child",childItem.toString())
                                     }
 
-                                    no += 1
+
+
 
                                     adapter = ExpandableCardViewAdapter(
-                                        parentItems.values.sortedBy { it.id }.toMutableList(),
+                                        parentItems.values.sortedBy { it.no }.toMutableList(),
                                         this@MainActivity
+
                                     )
+                                    no += 1
+
                                     recyclerView!!.adapter = adapter
 
                                 }

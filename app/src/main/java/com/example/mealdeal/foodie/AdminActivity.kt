@@ -17,7 +17,6 @@ import android.widget.*
 import android.widget.Toast.*
 import com.example.mealdeal.R
 
-import com.example.mealdeal.data.local.DataManager
 import com.example.mealdeal.data.local.Parent
 import com.example.mealdeal.util.NOTE_POSITION
 import com.example.mealdeal.util.POSITION_NOT_SET
@@ -27,6 +26,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
+import com.example.mealdeal.foodie.ui.MainActivity
 
 
 class AdminActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -45,7 +45,7 @@ class AdminActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin)
+        setContentView(com.example.mealdeal.R.layout.activity_admin)
         initViews()
 
         saveMenu()
@@ -78,8 +78,8 @@ class AdminActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private fun saveMenu() {
 
-        val foodTitle = findViewById<EditText>(R.id.foodEditText)
-        val foodPics = findViewById<ImageView>(R.id.food_image)
+        val foodTitle = findViewById<EditText>(com.example.mealdeal.R.id.foodEditText)
+        val foodPics = findViewById<ImageView>(com.example.mealdeal.R.id.food_image)
         val childItemId = dayForMenu
 
 
@@ -96,6 +96,7 @@ class AdminActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
         dayForMenu = daysOfOrder[position]
+
     }
 
     override fun onNothingSelected(arg0: AdapterView<*>) {
@@ -127,6 +128,14 @@ class AdminActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         Log.d("on pause", "onPause")
         saveMenu()
 
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(applicationContext, MainActivity::class.java)
+
+        intent.putExtra("value_key", dayForMenu)
+        startActivity(intent)
+        super.onBackPressed()
     }
 
 
